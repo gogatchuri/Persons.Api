@@ -1,12 +1,8 @@
 ﻿using MediatR;
-using Microsoft.EntityFrameworkCore;
 using Persons.Application.Enums;
-using Persons.Application.Helpers;
 using Persons.Application.Models;
 using Persons.Application.Persons.Queries.SearchPerson.Model;
 using Persons.Application.Repositories;
-using Persons.Domain.Entities;
-using System.Linq.Expressions;
 
 namespace Persons.Application.Persons.Queries.SearchPerson;
 
@@ -17,27 +13,7 @@ public class SearchPersonQueryHandler(IUnitOfWork unitOfWork)
 
     public async Task<PagedResult<SearchPersonResponse>> Handle(SearchPersonQuery request, CancellationToken cancellationToken)
     {
-        Expression<Func<Domain.Entities.Person, bool>> predicate = p => true;
-
-        if (!string.IsNullOrWhiteSpace(request.Name))
-        {
-            Expression<Func<Domain.Entities.Person, bool>> nameCondition = p => EF.Functions.Like(p.FirstName, $"%{request.Name}%");
-            predicate = PredicateHelper.CombinePredicates(predicate, nameCondition);
-        }
-
-        if (!string.IsNullOrWhiteSpace(request.LastName))
-        {
-            Expression<Func<Domain.Entities.Person, bool>> lastNameCondition = p => EF.Functions.Like(p.LastName, $"%{request.LastName}%");
-            predicate = PredicateHelper.CombinePredicates(predicate, lastNameCondition);
-        }
-
-        if (!string.IsNullOrWhiteSpace(request.PersonalNumber))
-        {
-            Expression<Func<Domain.Entities.Person, bool>> personalNumberCondition = p => EF.Functions.Like(p.PersonalNumber, $"%{request.PersonalNumber}%");
-            predicate = PredicateHelper.CombinePredicates(predicate, personalNumberCondition);
-        }
-
-        var personsList = await _unitOfWork.Persons.GetAllByConditionAsync(predicate, cancellationToken).ConfigureAwait(false);
+        var personsList = await _unitOfWork.Persons.GetAllByConditionAsync(request, cancellationToken).ConfigureAwait(false);
 
         var total = personsList.Count();
 
