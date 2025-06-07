@@ -1,7 +1,7 @@
 ﻿using MediatR;
-using Persons.Application.Enums;
 using Persons.Application.Models;
 using Persons.Application.Persons.Commands.CreatePerson.Model;
+using Persons.Domain.Enums;
 
 namespace Persons.Application.Persons.Commands.CreatePerson;
 

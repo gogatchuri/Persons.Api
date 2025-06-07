@@ -1,5 +1,5 @@
-﻿using Persons.Application.Enums;
-using Persons.Application.Models;
+﻿using Persons.Application.Models;
+using Persons.Domain.Enums;
 
 namespace Persons.Application.Persons.Queries.SearchPerson.Model;
 

@@ -5,5 +5,5 @@ namespace Persons.Application.Repositories;
 
 public interface IRelatedPersonRepository : IRepository<RelatedPerson>
 {
-    Task<RelatedPerson> GetByConditionAsync(Expression<Func<RelatedPerson, bool>> filter);
+    Task<RelatedPerson> GetByConditionAsync(int personId, int relatedToId);
 }

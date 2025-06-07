@@ -12,7 +12,7 @@ using Persons.Application.Persons.Queries.GetPersonById;
 using Persons.Application.Persons.Queries.GetRelatedPersons;
 using Persons.Application.Persons.Queries.SearchPerson.Model;
 using Persons.Application.Persons.Queries.SearchPerson;
-using Persons.Application.Enums;
+using Persons.Domain.Enums;
 
 namespace Persons.Api.Controllers;
 

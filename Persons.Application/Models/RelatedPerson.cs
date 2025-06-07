@@ -1,4 +1,4 @@
-﻿using Persons.Application.Enums;
+﻿using Persons.Domain.Enums;
 
 namespace Persons.Application.Models;
 

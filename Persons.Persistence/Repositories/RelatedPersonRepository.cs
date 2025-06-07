@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Azure.Core;
+using Microsoft.EntityFrameworkCore;
 using Persons.Application.Repositories;
 using Persons.Domain.Entities;
 using Persons.Persistence.Contexts;
@@ -8,6 +9,6 @@ namespace Persons.Persistence.Repositories;
 
 public class RelatedPersonRepository(PersonsDbContext context) : Repository<RelatedPerson>(context), IRelatedPersonRepository
 {
-    public async Task<RelatedPerson> GetByConditionAsync(Expression<Func<RelatedPerson, bool>> filter) 
-        => await _dbSet.FirstOrDefaultAsync(filter);
+    public async Task<RelatedPerson> GetByConditionAsync(int personId, int relatedToId) 
+        => await _dbSet.FirstOrDefaultAsync(r => r.PersonId == personId && r.RelatedToId == relatedToId);
 }

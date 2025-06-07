@@ -1,6 +1,6 @@
 ﻿using MediatR;
-using Persons.Application.Enums;
 using Persons.Application.Persons.Queries.GetRelatedPersons.Model;
+using Persons.Domain.Enums;
 
 namespace Persons.Application.Persons.Queries.GetRelatedPersons;
 

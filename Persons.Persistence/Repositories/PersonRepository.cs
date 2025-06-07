@@ -17,7 +17,10 @@ public class PersonRepository(PersonsDbContext context) : Repository<Person>(con
             .Include(p => p.City)
             .Include(p => p.PhoneNumbers)
             .Include(p => p.RelatedPersons)
-                .ThenInclude(r => r.RelatedTo);
+                .ThenInclude(r => r.RelatedTo)
+            .OrderByDescending(s => s.Id)
+            .Skip((request.Page - 1) * request.PageSize)
+            .Take(request.PageSize);
 
         if (!string.IsNullOrWhiteSpace(request.Name))
         {
@@ -60,8 +63,5 @@ public class PersonRepository(PersonsDbContext context) : Repository<Person>(con
             .Include(p => p.RelatedPersons)
             .ThenInclude(r => r.RelatedTo)
             .FirstOrDefaultAsync(p => p.Id == id, cancellationToken);
-
-    public void Update(Person entity) => _dbSet.Update(entity);
-
 }
 

@@ -23,7 +23,7 @@ public class GetRelatedPersonsQueryHandler(IUnitOfWork unitOfWork)
                 .Select(s => new RelatedPersonModel
                 {
                     RelatedPersonFullName = $"{s.RelatedTo.FirstName} {s.RelatedTo.LastName}",
-                    RelationType = (Enums.RelationType)s.RelationType
+                    RelationType = s.RelationType
                 })]
             })
             .ToList();

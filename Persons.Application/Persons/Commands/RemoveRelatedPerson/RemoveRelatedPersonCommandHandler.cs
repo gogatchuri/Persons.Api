@@ -10,8 +10,7 @@ public class RemoveRelatedPersonCommandHandler(IUnitOfWork unitOfWork) : IReques
     public async Task<bool> Handle(RemoveRelatedPersonCommand request, CancellationToken cancellationToken)
     {
         var relation = await _unitOfWork.RelatedPersons
-            .GetByConditionAsync(r => r.PersonId == request.PersonId
-                                    && r.RelatedToId == request.RelatedToId).ConfigureAwait(false);
+            .GetByConditionAsync(request.PersonId, request.RelatedToId).ConfigureAwait(false);
 
         if (relation is null)
             return false;

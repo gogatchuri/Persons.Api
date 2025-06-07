@@ -13,6 +13,7 @@ public class Repository<T>(PersonsDbContext context) : IRepository<T> where T : 
     public async Task AddAsync(T entity, CancellationToken cancellationToken) 
         => await _dbSet.AddAsync(entity, cancellationToken);
 
+    public void Update(T entity) => _dbSet.Update(entity);
     public void Delete(T entity) => _dbSet.Remove(entity);
 
 }

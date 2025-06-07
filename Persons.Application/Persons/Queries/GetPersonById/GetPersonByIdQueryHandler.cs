@@ -1,5 +1,4 @@
 ﻿using MediatR;
-using Persons.Application.Enums;
 using Persons.Application.Persons.Queries.GetPersonById.Model;
 using Persons.Application.Repositories;
 
@@ -21,7 +20,7 @@ public class GetPersonByIdQueryHandler(IUnitOfWork unitOfWork)
         {
             FirstName = person.FirstName,
             LastName = person.LastName,
-            Gender = (Gender)person.Gender,
+            Gender = person.Gender,
             PersonalNumber = person.PersonalNumber,
             DateOfBirth = person.DateOfBirth,
             City = person.City == null
@@ -34,13 +33,13 @@ public class GetPersonByIdQueryHandler(IUnitOfWork unitOfWork)
             PhoneNumbers = person.PhoneNumbers?.Select(p => new Models.PhoneNumber
             {
                 Number = p.Number,
-                Type = (PhoneType)p.Type
+                Type = p.Type
             }).ToList(),
             PicturePath = person.PicturePath,
             RelatedPersons = person.RelatedPersons?.Select(p => new Models.RelatedPerson
             {
                 RelatedToId = p.RelatedToId,
-                RelationType = (RelationType)p.RelationType
+                RelationType = p.RelationType
             }).ToList()
         };
 

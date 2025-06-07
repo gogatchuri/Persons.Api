@@ -10,5 +10,4 @@ public interface IPersonRepository : IRepository<Person>
     Task<Person> GetByIdAsync(int id, CancellationToken cancellationToken);
     Task<IEnumerable<Person>> GetAllByConditionAsync(SearchPersonQuery request, CancellationToken cancellationToken);
     Task<IEnumerable<Person>> GetByRelationTypeAsync(GetRelatedPersonsQuery request, CancellationToken cancellationToken);
-    void Update(Person entity);
 }
