@@ -17,25 +17,37 @@ public class PersonRepository(PersonsDbContext context) : Repository<Person>(con
             .Include(p => p.City)
             .Include(p => p.PhoneNumbers)
             .Include(p => p.RelatedPersons)
-                .ThenInclude(r => r.RelatedTo)
-            .OrderByDescending(s => s.Id)
+                .ThenInclude(r => r.RelatedTo);
+
+        if (!string.IsNullOrWhiteSpace(request.Query))
+        {
+            query = query.Where(p =>
+                EF.Functions.Like(p.FirstName, $"%{request.Query}%") ||
+                EF.Functions.Like(p.LastName, $"%{request.Query}%") ||
+                EF.Functions.Like(p.PersonalNumber, $"%{request.Query}%"));
+        }
+        else
+        {
+
+            if (!string.IsNullOrWhiteSpace(request.Name))
+                query = query.Where(p => p.FirstName == request.Name);
+
+            if (!string.IsNullOrWhiteSpace(request.LastName))
+                query = query.Where(p => p.LastName == request.LastName);
+
+            if (!string.IsNullOrWhiteSpace(request.PersonalNumber))
+                query = query.Where(p => p.PersonalNumber == request.PersonalNumber);
+
+            if (request.DateOfBirth.HasValue)
+                query = query.Where(p => p.DateOfBirth == request.DateOfBirth.Value);
+
+            if (request.Gender.HasValue)
+                query = query.Where(p => p.Gender == request.Gender);
+        }
+
+        query = query.OrderByDescending(s => s.Id)
             .Skip((request.Page - 1) * request.PageSize)
             .Take(request.PageSize);
-
-        if (!string.IsNullOrWhiteSpace(request.Name))
-        {
-            query = query.Where(p => EF.Functions.Like(p.FirstName, $"%{request.Name}%"));
-        }
-
-        if (!string.IsNullOrWhiteSpace(request.LastName))
-        {
-            query = query.Where(p => EF.Functions.Like(p.LastName, $"%{request.LastName}%"));
-        }
-
-        if (!string.IsNullOrWhiteSpace(request.PersonalNumber))
-        {
-            query = query.Where(p => EF.Functions.Like(p.PersonalNumber, $"%{request.PersonalNumber}%"));
-        }
 
         return await query.ToListAsync(cancellationToken).ConfigureAwait(false);
     }
@@ -56,7 +68,7 @@ public class PersonRepository(PersonsDbContext context) : Repository<Person>(con
         return await query.ToListAsync(cancellationToken).ConfigureAwait(false);
     }
 
-    public async Task<Person> GetByIdAsync(int id, CancellationToken cancellationToken) 
+    public async Task<Person> GetByIdAsync(int id, CancellationToken cancellationToken)
         => await _dbSet
             .Include(p => p.City)
             .Include(p => p.PhoneNumbers)

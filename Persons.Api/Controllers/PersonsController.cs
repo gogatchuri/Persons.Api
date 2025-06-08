@@ -110,10 +110,9 @@ public class PersonsController(IMediator mediator) : ControllerBase
     }
 
     [HttpGet("Search")]
-    public async Task<IActionResult> Search([FromQuery] SearchPersonRequest request, CancellationToken cancellationToken)
+    public async Task<IActionResult> Search([FromQuery] SearchPersonQuery request, CancellationToken cancellationToken)
     {
-        var query = new SearchPersonQuery(request.Name, request.LastName, request.PersonalNumber, request.Page, request.PageSize);
-        var result = await _mediator.Send(query, cancellationToken).ConfigureAwait(false);
+        var result = await _mediator.Send(request, cancellationToken).ConfigureAwait(false);
 
         return Ok(result);
     }
